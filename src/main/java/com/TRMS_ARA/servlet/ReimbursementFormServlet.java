@@ -22,7 +22,19 @@ public class ReimbursementFormServlet extends HttpServlet {
 	}
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		int eId = (Integer) request.getSession().getAttribute("employeeId");
+		
+		String startDate = request.getParameter("date");
+		String startTime = request.getParameter("time");
+		
+		String location = request.getParameter("place");
+		String description = request.getParameter("description");
+		String explanation = request.getParameter("explain");
+		Double cost = Double.parseDouble(request.getParameter("price"));
+		String gradingFormat = request.getParameter("format");
+		String eventType = request.getParameter("type");
+		String workRelated = request.getParameter("explain");
 		
 	}
 	

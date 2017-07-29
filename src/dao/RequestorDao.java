@@ -35,8 +35,7 @@ public class RequestorDao {
 	}
 	
 	
-	public boolean submitReimbursement(	int eId, Date startDate, Date endDate,
-										Date startTime, Date endTime, 
+	public boolean submitReimbursement(	int eId, Date startDate, Date startTime,
 										String location, String description, 
 										double cost, String gradingFormat,
 										String eventType, String workRelated) throws SQLException{
@@ -44,23 +43,20 @@ public class RequestorDao {
 		conn = ConnectionFactory.getInstance().getConnection();
 		conn.setAutoCommit(false);
 		String sql = "insert into Reimbursement_Form ("
-				+ "e_id, start_date, end_date, "
-				+ "start_time, end_time, location, "
+				+ "e_id, start_date, start_time, location, "
 				+ "description, cost, grading_format, "
-				+ "event_type, work_related) values (?,?,?,?,?,?,?,?,?,?,?)";
+				+ "event_type, work_related) values (?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, eId);
-		stmt.setDate(2, startDate);
-		stmt.setDate(3, endDate);
-		stmt.setDate(4, startTime);
-		stmt.setDate(5, endTime);
-		stmt.setString(6, location);
-		stmt.setString(7, description);
-		stmt.setDouble(8, cost);
-		stmt.setString(9, gradingFormat);
-		stmt.setString(10, eventType);
-		stmt.setString(11, workRelated);
+		stmt.setString(2, startDate);
+		stmt.setString(3, startTime);
+		stmt.setString(4, location);
+		stmt.setString(5, description);
+		stmt.setDouble(6, cost);
+		stmt.setString(7, gradingFormat);
+		stmt.setString(8, eventType);
+		stmt.setString(9, workRelated);
 		
 		Savepoint s = conn.setSavepoint();
 		int count = stmt.executeUpdate();

@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="ReimbursementForm.css">
     
     <link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css'/>
-    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     
   </head>
   <body>
@@ -15,11 +15,13 @@
     <h2>Welcome! Please fill out the form below to apply for reimbursement.</h2>
   </div>
   
+  
+  <form action="reimbursementform" method="put">
     <fieldset>
       <legend><h3>Event Information</h3></legend>
       <span>
         <h4><label for="type">What type of event will you attend?</label>
-        <select name="type">
+        <select id="type" name="type">
           <option value="university">University Course</option>
           <option value="seminar">Seminar</option>
           <option value="certprep">Certification Preparation</option>
@@ -31,7 +33,7 @@
         
       <span>
         <h4><label for="format">How will this event be graded?</label>
-        <select name="format">
+        <select id="format" name="format">
           <option value="letter">Letter Grade</option>
           <option value="presentation">Presentation</option>
           <option value="percent">Percentile</option>
@@ -41,36 +43,37 @@
       
       <div>
         <h4><label for="date">When will this event start? Date: </label>
-        <input type="text" id="startDay" name="date">  Time: <input type="text" name="time" id="spinner" value="12:00 PM"></h4>
+        <input type="text" id="startDay" name="date">  Time: <input type="text" name="time" class="timepicker" value="12:00 PM"></h4>
       </div>
       
       <div>
       	<h4><label for="price">How much will this event cost?</label>
-      	<input type="number" name="price" min="0"></h4>
+      	<input type="number" name="price" id="price" min="0"></h4>
       </div>
       
       <div>
       	<h4><label for="place">Where will this event be located?</label>
-      	<input type="text" name="place"></h4>
+      	<input type="text" id="place" name="place"></h4>
       </div>
     </fieldset>
     
     <fieldset>
       <legend><h2>Event Description</h2></legend>
       <h4><label for="description">Describe this event:</label></h4>
-      <textarea name="description" rows="5" cols="40"></textarea>
+      <textarea id="description" name="description" rows="5" cols="40"></textarea>
       
       <h4><label for="explain">Why is this event relevant to your work?</label></h4>
-      <textarea name="explain" rows="5" cols="40"></textarea>
+      <textarea name="explain" id="explain" rows="5" cols="40"></textarea>
     </fieldset>
     <br>
-    <button id="submit" value="Submit">Submit</button>
-    
+    <input type="submit" value="Submit">
+  </form>  
   
   
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
   <script type='text/javascript' src='ReimbursementForm.js'></script>
   </body>
 </html>
