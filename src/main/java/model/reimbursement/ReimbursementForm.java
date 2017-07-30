@@ -1,8 +1,8 @@
-package reimbursement;
+package model.reimbursement;
 
 import java.io.File;
 
-import employee.Employee;
+import model.employee.Employee;
 
 public class ReimbursementForm {
 	Employee requestor;

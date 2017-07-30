@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
-import jsonString.JSONConvert;
+//import jsonString.JSONConvert;
 import util.ConnectionFactory;
 
 public abstract class ApproverDao {
@@ -85,7 +85,7 @@ int eId;
 			strArray[12] = String.valueOf(rs.getDate(14));	// last activity
 			//NOTE: blob object: approval object not included
 			
-			returnArray[i] = JSONConvert.getJSON(strArray);
+//			returnArray[i] = JSONConvert.getJSON(strArray);
 		}
 		return returnArray;
 	}

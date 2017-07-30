@@ -56,7 +56,7 @@ public class RequestorDao {
 		stmt.setString(5, description);
 		stmt.setDouble(6, cost);
 		stmt.setString(7, gradingFormat);
-		stmt.setString(8, eventType);
+		stmt.setInt(8, eventType);
 		stmt.setString(9, workRelated);
 		
 		Savepoint s = conn.setSavepoint();
