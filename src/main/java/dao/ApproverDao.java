@@ -10,22 +10,31 @@ import java.sql.Savepoint;
 import util.ConnectionFactory;
 
 public abstract class ApproverDao {
-Connection conn;
-int rfId;
-int eId;
+	Connection conn;
 
-	public ApproverDao(int rfId, int eId) {
-		this.rfId = rfId;
-		this.eId = eId;
+	public ApproverDao() {
+		super();
+		connect();
 	}
 	
-	public boolean approveReimbursement() throws SQLException{
+	private void connect(){
 		conn = ConnectionFactory.getInstance().getConnection();
+	}
+	
+	public boolean fetchForms(int userID) {
+		
+		
+		
+		
+	}
+	
+	public boolean approveReimbursement(int rfId) throws SQLException{
+		
 		conn.setAutoCommit(false);
 		String sql = "update Reimbursement_Form set status = status + 1 where rf_id = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, this.rfId);
+		stmt.setInt(1, rfId);
 		Savepoint s = conn.setSavepoint();
 		int count = stmt.executeUpdate();
 		
@@ -38,27 +47,9 @@ int eId;
 		return 	count != 1;
 	}
 	
-	public boolean denyReimbursement() throws SQLException {
-		conn = ConnectionFactory.getInstance().getConnection();
-		conn.setAutoCommit(false);
-		String sql = "update Reimbursement_Form set status = 0 where rf_Id = ?";
-		
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, this.rfId);
-		Savepoint s = conn.setSavepoint();
-		int count = stmt.executeUpdate();
-		
-		if (count!=1) {
-			conn.rollback(s);
-		}
-		conn.setAutoCommit(true);
-		
-		conn.close();
-		return count != 1;
-	}
+	public abstract boolean denyReimbursement(int rfId) throws SQLException;
 	
 	public String[] getRFInfo(int rfStatus) throws SQLException {
-		conn = ConnectionFactory.getInstance().getConnection();
 		String sql = "select * from Reimburse_Form where status = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -90,12 +81,12 @@ int eId;
 		return returnArray;
 	}
 	
-	public boolean requestForInfo(String detail, int receiver) throws SQLException {
-		conn = ConnectionFactory.getInstance().getConnection();
+	public boolean requestForInfo(String detail, int receiver, int rfId, int eId) throws SQLException {
+		
 		String sql = "select * from Request where rf_id = ? and sender = ? and receiver = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, this.rfId);
-		stmt.setInt(2, this.eId);
+		stmt.setInt(1, rfId);
+		stmt.setInt(2, eId);
 		stmt.setInt(3, receiver);
 		
 		ResultSet rs = stmt.executeQuery();
@@ -107,8 +98,8 @@ int eId;
 			
 			sql = "insert into Request(rf_id, sender, receiver, detail) values (?, ?, ?, ?)";
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, this.rfId);
-			stmt.setInt(2, this.eId);
+			stmt.setInt(1, rfId);
+			stmt.setInt(2, eId);
 			stmt.setInt(3, receiver);
 			stmt.setString(4, detail);
 			

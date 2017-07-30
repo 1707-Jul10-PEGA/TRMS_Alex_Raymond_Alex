@@ -1,7 +1,6 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Savepoint;
@@ -13,11 +12,15 @@ public class RequestorDao {
 	
 	
 	public RequestorDao() {
-		
+		super();
+		connect();
+	}
+	
+	private void connect(){
+		conn = ConnectionFactory.getInstance().getConnection();
 	}
 	
 	public boolean cancelReimbursement(int rfId) throws SQLException{
-		conn = ConnectionFactory.getInstance().getConnection();
 		conn.setAutoCommit(false);
 		String sql = "update Reimbursement_Form set status = 0 where status = 4 and rf_id = ?";
 		
@@ -30,7 +33,6 @@ public class RequestorDao {
 			conn.rollback(s);
 		}
 		conn.setAutoCommit(false);
-		conn.close();
 		
 		return count != 1;
 	}
@@ -41,12 +43,11 @@ public class RequestorDao {
 										double cost, String gradingFormat,
 										int eventType, String workRelated) throws SQLException{
 		
-		conn = ConnectionFactory.getInstance().getConnection();
 		conn.setAutoCommit(false);
 		String sql = "insert into Reimbursement_Form (rf_id"
 				+ "e_id, start_date, start_time, location, "
 				+ "description, cost, grading_format, "
-				+ "event_type, work_related, status) values (0,?,?,?,?,?,?,?,?,?,0)";
+				+ "event_type, work_related, status) values (0,?,?,?,?,?,?,?,?,?,1)";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, eId);
@@ -66,7 +67,6 @@ public class RequestorDao {
 			conn.rollback(s);
 		}
 		conn.setAutoCommit(true);
-		conn.close();
 		return count != 1;
 			
 	}

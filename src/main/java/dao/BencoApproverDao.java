@@ -8,7 +8,7 @@ import util.ConnectionFactory;
 
 public class BencoApproverDao extends ApproverDao {
 	BencoApproverDao(int rfId, int eId) {
-		super(rfId, eId);
+		super();
 	}
 	
 	public boolean changeAmount(double amount) throws SQLException {
@@ -29,5 +29,11 @@ public class BencoApproverDao extends ApproverDao {
 		conn.close();
 		return count != 1;
 		
+	}
+
+	@Override
+	public boolean denyReimbursement(int rfId) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
