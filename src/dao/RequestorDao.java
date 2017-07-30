@@ -10,10 +10,10 @@ import util.ConnectionFactory;
 
 public class RequestorDao {
 	Connection conn;
-	int rfId;
 	
-	public RequestorDao(int rfId) {
-		this.rfId = rfId;
+	
+	public RequestorDao() {
+		
 	}
 	
 	public boolean cancelReimbursement(int rfId) throws SQLException{
@@ -25,27 +25,28 @@ public class RequestorDao {
 		stmt.setInt(1, rfId);
 		int count = stmt.executeUpdate();
 		Savepoint s = conn.setSavepoint();
-		conn.close();
 		
 		if (count != 1) {
 			conn.rollback(s);
 		}
+		conn.setAutoCommit(false);
+		conn.close();
 		
 		return count != 1;
 	}
 	
 	
-	public boolean submitReimbursement(	int eId, Date startDate, Date startTime,
+	public boolean submitReimbursement(	int eId, String startDate, String startTime,
 										String location, String description, 
 										double cost, String gradingFormat,
-										String eventType, String workRelated) throws SQLException{
+										int eventType, String workRelated) throws SQLException{
 		
 		conn = ConnectionFactory.getInstance().getConnection();
 		conn.setAutoCommit(false);
-		String sql = "insert into Reimbursement_Form ("
+		String sql = "insert into Reimbursement_Form (rf_id"
 				+ "e_id, start_date, start_time, location, "
 				+ "description, cost, grading_format, "
-				+ "event_type, work_related) values (?,?,?,?,?,?,?,?,?)";
+				+ "event_type, work_related, status) values (0,?,?,?,?,?,?,?,?,?,0)";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, eId);
@@ -64,6 +65,7 @@ public class RequestorDao {
 		if (count!=1) {
 			conn.rollback(s);
 		}
+		conn.setAutoCommit(true);
 		conn.close();
 		return count != 1;
 			

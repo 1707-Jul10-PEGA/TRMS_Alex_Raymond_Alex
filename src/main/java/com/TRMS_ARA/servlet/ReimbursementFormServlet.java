@@ -1,6 +1,7 @@
 package com.TRMS_ARA.servlet;
 
 import java.io.IOException;
+import java.sql.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import dao.RequestorDao;
 
 public class ReimbursementFormServlet extends HttpServlet {
 
@@ -30,11 +33,14 @@ public class ReimbursementFormServlet extends HttpServlet {
 		
 		String location = request.getParameter("place");
 		String description = request.getParameter("description");
-		String explanation = request.getParameter("explain");
 		Double cost = Double.parseDouble(request.getParameter("price"));
 		String gradingFormat = request.getParameter("format");
-		String eventType = request.getParameter("type");
+		int eventType = Integer.parseInt(request.getParameter("type"));
 		String workRelated = request.getParameter("explain");
+		
+		RequestorDao 
+		
+		//eId, startDate, startTime, location, description, cost, gradingFormat, eventType, workRelated
 		
 	}
 	
