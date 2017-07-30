@@ -1,7 +1,7 @@
 package com.TRMS_ARA.servlet;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import dao.RequestorDao;
 
 public class ReimbursementFormServlet extends HttpServlet {
 
@@ -36,7 +38,23 @@ public class ReimbursementFormServlet extends HttpServlet {
 		int eventType = Integer.parseInt(request.getParameter("type"));
 		String workRelated = request.getParameter("explain");
 		
-		//RequestorDao 
+		RequestorDao requestDao = new RequestorDao();
+		
+		boolean put;
+		
+		try {
+			put = requestDao.submitReimbursement(eId, startDate, startTime, location, description, cost, gradingFormat, eventType, workRelated);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			put = false;
+			e.printStackTrace();
+		}
+		
+		if (put){
+			response.sendRedirect("formsuccess.html");
+		} else {
+			response.getWriter().write("Submission failed: please try again.");
+		}
 		
 		//eId, startDate, startTime, location, description, cost, gradingFormat, eventType, workRelated
 		
