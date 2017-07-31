@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.util.LinkedList;
 
 //import jsonString.JSONConvert;
 import util.ConnectionFactory;
@@ -21,11 +22,99 @@ public abstract class ApproverDao {
 		conn = ConnectionFactory.getInstance().getConnection();
 	}
 	
-	public boolean fetchForms(int userID) {
+	public LinkedList<Integer> fetchForms(int userID) throws SQLException {
+		
+		String dept = "";
+		boolean benCo = false;
+		boolean deptHead = false;
+		
+		LinkedList<Integer> output = new LinkedList<Integer>();
+		
+		String sql = "select department, department_head from Employee where e_id = ?";
+		
+		PreparedStatement pstmnt = conn.prepareStatement(sql);
+		pstmnt.setInt(1, userID);
+		
+		ResultSet user = pstmnt.executeQuery();
+		
+		while(user.next()){
+			dept = user.getString(1);
+			benCo = dept.equals("BC");
+			deptHead = user.getBoolean(2);
+		}
+		
+		String dsSql = "select Reimbursement_Form.rf_id FROM "
+				+ "Reimbursement_Form Inner Join Employee "
+				+ "ON Reimbursement_Form.e_id = Employee.e_id WHERE "
+				+ "Employee.supervisor = ? AND Reimbursement_Form.status = 1";
+		
+		PreparedStatement getSupervised = conn.prepareStatement(dsSql);
+		
+		getSupervised.setInt(1, userID);
+		
+		ResultSet supervised = getSupervised.executeQuery();
+		
+		while(supervised.next()){
+			Integer rfId = supervised.getInt(1);
+			if(!output.contains(rfId)){
+				output.add(rfId);
+			}
+		}
 		
 		
+		if(deptHead){
+			String dhSql = "select Reimbursement_Form.rf_id FROM "
+					+ "Reimbursement_Form Inner Join Employee "
+					+ "ON Reimbursement_Form.e_id = Employee.e_id WHERE "
+					+ "Employee.department = ? AND Reimbursement_Form.status = 2";
+			
+			PreparedStatement deptFormIDs = conn.prepareStatement(dhSql);
+			
+			deptFormIDs.setString(1, dept);
+			
+			ResultSet deptForms = deptFormIDs.executeQuery();
+			
+			while(deptForms.next()){
+				Integer rfId = deptForms.getInt(1);
+				if(!output.contains(rfId)){
+					output.add(rfId);
+				}
+			}
+		}
 		
-		return false;
+		if(benCo){
+			
+			String bcSql = "select Reimbursement_Form.rf_id, "
+					+ " Employee.department FROM Reimbursement_Form Inner Join"
+					+ " Employee ON Reimbursement_Form.e_id = Employee.e_id "
+					+ "WHERE (Reimbursement_Form.benCo = ? OR Reimbursement_Form.benCo = ?) "
+					+ "AND Reimbursement_Form.status = 3 "
+					+ "AND Employee.supervisor <> ?";
+			
+			PreparedStatement benCoForms = conn.prepareStatement(bcSql);
+			
+			benCoForms.setInt(1, userID);
+			benCoForms.setString( 2, null);
+			benCoForms.setInt(3, userID);
+			
+			ResultSet bcForms = benCoForms.executeQuery();
+			
+			while(bcForms.next()){
+				
+				int rfId = bcForms.getInt(1);
+				String empDept = bcForms.getString(2);
+				
+				if (!("BC".equals(empDept) && deptHead )){
+					if (!output.contains(rfId)){
+						output.add(rfId);
+					}
+				}
+				
+			}
+			
+		}
+		
+		return output;
 	}
 	
 	public boolean approveReimbursement(int rfId) throws SQLException{
@@ -49,11 +138,11 @@ public abstract class ApproverDao {
 	
 	public abstract boolean denyReimbursement(int rfId) throws SQLException;
 	
-	public String[] getRFInfo(int rfStatus) throws SQLException {
+	public String[] getRFInfo(int rfId) throws SQLException {
 		String sql = "select * from Reimburse_Form where status = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, rfStatus);
+		stmt.setInt(1, rfId);
 		ResultSet rs = stmt.executeQuery();
 		
 		String[] returnArray = new String[rs.getFetchSize()];
