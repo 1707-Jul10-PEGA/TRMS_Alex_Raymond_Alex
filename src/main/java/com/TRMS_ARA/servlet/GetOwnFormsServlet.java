@@ -42,7 +42,7 @@ public class GetOwnFormsServlet extends HttpServlet {
 		}
 		PrintWriter pw = response.getWriter();
 		
-		if (rfOwnArray == null) { pw.print("HI there NULL"); }
+		if (rfOwnArray == null) { pw.print(""); }
 		else {
 			RFView rfv = new RFView(rfOwnArray);
 			response.setContentType("application/json");

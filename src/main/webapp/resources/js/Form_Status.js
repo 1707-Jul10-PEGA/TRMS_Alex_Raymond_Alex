@@ -37,7 +37,9 @@ window.onload = function() {
 	$.post('getOwnForms', function() {
 		
 	}).done(function(rowsData) {
-		generateRFRows("own_forms",rowsData);
+		if (rowsData) {
+			generateRFRows("own_forms",rowsData);
+		}
 	});
 
 	/*$.post('getOtherForms', function() {
