@@ -10,9 +10,10 @@ import java.util.Properties;
 public class ConnectionFactory {
 	private static ConnectionFactory cf = null;
 	private static boolean build = true;
-	
-	private ConnectionFactory(){}
-	
+
+	private ConnectionFactory() {
+	}
+
 	public static synchronized ConnectionFactory getInstance() {
 		if (build) {
 			cf = new ConnectionFactory();
@@ -20,18 +21,22 @@ public class ConnectionFactory {
 		}
 		return cf;
 	}
-	
+
 	public Connection getConnection() {
 		Connection conn = null;
 		Properties prop = new Properties();
-		try{
-			prop.load(new FileReader("datasource.properties"));
-		} catch (IOException e) {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			ClassLoader cl = getClass().getClassLoader();
+			prop.load(new FileReader(cl.getResource("datasource.properties").getFile()));
+
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		try {
-			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-			
+			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"),
+					prop.getProperty("password"));
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
