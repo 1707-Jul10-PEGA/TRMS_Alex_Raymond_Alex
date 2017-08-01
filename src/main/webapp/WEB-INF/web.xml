@@ -19,4 +19,14 @@
     <servlet-name>GetRequests</servlet-name>
     <url-pattern>/GetRequests</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ViewRFDetails</display-name>
+    <servlet-name>ViewRFDetails</servlet-name>
+    <servlet-class>com.TRMS_ARA.servlet.ViewRFDetails</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewRFDetails</servlet-name>
+    <url-pattern>/ViewRFDetails</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -1,3 +1,8 @@
+function generateRFDetailRows(details) {
+	
+}
+
+
 function generateRFRows(form_id, rowsData) {
 
 	for (i = 0; i < rowsData.rfVRows.length; i++) {
@@ -5,76 +10,65 @@ function generateRFRows(form_id, rowsData) {
 		// 
 		var newRow = document.createElement("tr");
 
-		newRow.addActionListener("click", function() {
-			//TODO: EDIT click function
-		});
+		//set class and rfId attribute
 		newRow.setAttribute("class", "re_row");
+		newRow.setAttribute("rfId", rowsData.rfVRows[i].rfId);
+		console.log(newRow.getAttribute("rfId"));
 		
 		//store id
-		var id_row = document.createElement("td");
-		newColumn.append(document
+		var id_col = document.createElement("td");
+		id_col.append(document
 				.createTextNode(rowsData.rfVRows[i].rfId));
-		newRow.appendChild(id_row);
+		newRow.appendChild(id_col);
 
 		//store first name
-		var first_row = document.createElement("td");
-		newColumn2.append(document
+		var first_col = document.createElement("td");
+		first_col.append(document
 				.createTextNode(rowsData.rfVRows[i].first));
-		newRow.appendChild(first_row);
+		newRow.appendChild(first_col);
 		
 		// store last name
-		var last_row = document.createElement("td");
-		newColumn2.append(document
+		var last_col = document.createElement("td");
+		last_col.append(document
 				.createTextNode(rowsData.rfVRows[i].last));
-		newRow.appendChild(last_row);
+		newRow.appendChild(last_col);
 
-		document.getElementById(form_id).append(newRow);
+		$('#own_forms').append(newRow);
 	}
+	
+	
+	$('#own_forms tr').click(function() {
+		var rfId = $(this).attr("rfId");
+		if (rfId) {
+			$.post('viewRFDetails', {rfId:rfId});
+		}
+		console.log(rfId);
+	});
 }
 
 window.onload = function() {
 
-	$.post('getOwnForms', function() {
-		
-	}).done(function(rowsData) {
+	$.post('getOwnForms', function(rowsData) {
+		generateRFRows("own_forms",rowsData);
+	});
+
+	$.post('getOtherForms', function(rowsData) {
 		if (rowsData) {
-			generateRFRows("own_forms",rowsData);
+			generateRFRows("other_forms",rowsData);
 		}
 	});
 
-	/*$.post('getOtherForms', function() {
-		generateRFRows("other_forms",rowsData);
-	}).done(function() {
-		alert("hi");
-	})
-
-	$.post('getRequests', function() {
-
-	}).done(function() {
-		alert("hi");
-	})*/
-
-	var tTop = document.createElement("tr");
-
-	var headerRow = document.createElement("th");
-	headerRow.append(document.createTextNode("Reimbursement ID"));
-
-	tTop.appendChild(headerRow);
-
-	var headerRow2 = document.createElement("th");
-	headerRow2.append(document.createTextNode("First Name"));
-
-	tTop.appendChild(headerRow2);
+	$.post('getRequests', function(rowsData) {
+		if (rowsData) {
+			
+		}	
+	});
 	
-
-	var headerRow3 = document.createElement("th");
-	headerRow3.append(document.createTextNode("Last Name"));
-	
-	tTop.appendChild(headerRow3);
-
-	var tables = document.getElementsByClassName("gen_table");
-
-	Array.prototype.forEach.call(tables, function(t) {
-		t.append(tTop);
+	$('#own_forms tr').click(function() {
+		var rfId = $(this).attr("rfId");
+		if (rfId) {
+			$.post('viewRFDetails', rfId);
+		}
+		console.log(rfId);
 	});
 }
