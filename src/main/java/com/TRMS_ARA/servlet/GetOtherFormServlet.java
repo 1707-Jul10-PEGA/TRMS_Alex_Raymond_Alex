@@ -14,9 +14,14 @@ public class GetOtherFormServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -5076656763328481515L;
 	
+	public GetOtherFormServlet(){
+		super();
+	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
+		
+		
 		
 	}
 	
