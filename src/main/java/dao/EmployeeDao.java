@@ -101,6 +101,7 @@ public class EmployeeDao {
 		
 		if (rs.next()) {
 			ReimbursementForm rf = new ReimbursementForm();
+			rf.setRfId(rs.getInt(1));							// rf_id
 			rf.seteId(rs.getInt(2)); 							// e_id
 			rf.setStartDate(rs.getDate(3));						// start_date
 			rf.setStartTime(rs.getDate(4));						// start_time

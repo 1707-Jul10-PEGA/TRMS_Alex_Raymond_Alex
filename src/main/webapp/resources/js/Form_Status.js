@@ -1,6 +1,8 @@
 function generateRFDetailRows(details) {
 
 	$('#formDetails td').remove();
+	$('#buttons button').remove();
+	$('#rf_id').append('<td>' + details.rfId + '</td>');
 	$('#e_id').append('<td>' + details.eId + '</td>');
 	$('#start_date').append('<td>' + details.startDate + '</td>');
 	$('#start_time').append('<td>' + details.startTime + '</td>');
@@ -14,8 +16,23 @@ function generateRFDetailRows(details) {
 	$('#work_related').append('<td>' + details.workRelated + '</td>');
 	$('#status').append('<td>' + details.status + '</td>');
 	$('#last_activity').append('<td>' + details.lastActivity + '</td>');
+	
+	if (!details.approver) {
+		$('#buttons').append('<button id = "approve">Approve</button>');
+		$('#buttons').append('<button id = "deny">Deny</button>');
+		
+		$('#approve').click(function () {
+			$.post('approve',{rfId:details.rfId}, function(message) {
+				
+			});
+		});
+		
+		$('#deny').click(function() {
+			$.post('deny', {rfId:details.rfId}, function(message) {
+			});
+		});
+	}	
 }
-
 
 function generateRFRows(form_id, rowsData) {
 
@@ -79,6 +96,4 @@ window.onload = function() {
 			
 		}	
 	});
-	
-
 }

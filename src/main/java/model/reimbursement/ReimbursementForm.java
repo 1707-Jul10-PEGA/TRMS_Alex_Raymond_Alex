@@ -3,6 +3,7 @@ package model.reimbursement;
 import java.sql.Date;
 
 public class ReimbursementForm {
+	int rfId;							// rf_id
 	int eId; 							// e_id
 	Date startDate;						// start_date
 	Date startTime;						// start_time
@@ -17,6 +18,14 @@ public class ReimbursementForm {
 	int status;							// status
 	Date lastActivity;					// lastActivity
 	boolean isApprover;					// confirm the right for this viewer to approve/deny the form 
+
+	public int getRfId() {
+		return rfId;
+	}
+
+	public void setRfId(int rfId) {
+		this.rfId = rfId;
+	}
 
 	public ReimbursementForm() {
 		super();
