@@ -41,12 +41,14 @@ public class GetOwnFormsServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		PrintWriter pw = response.getWriter();
-		
-		if (rfOwnArray == null) { pw.print("HI there NULL"); }
+
+		if (rfOwnArray == null) {
+			pw.print("");
+		} 
 		else {
 			RFView rfv = new RFView(rfOwnArray);
 			response.setContentType("application/json");
-			
+
 			String rfOwnListString = (new ObjectMapper()).writeValueAsString(rfv);
 
 			pw.print(rfOwnListString);

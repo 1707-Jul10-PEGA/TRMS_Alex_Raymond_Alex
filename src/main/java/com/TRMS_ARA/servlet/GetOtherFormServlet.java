@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.ApproverDao;
+
 public class GetOtherFormServlet extends HttpServlet {
 
 	/**
@@ -21,6 +23,9 @@ public class GetOtherFormServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		
+		int userID = (Integer) request.getSession().getAttribute("employeeId");
+		
+		ApproverDao getInfo = new ApproverDao();
 		
 		
 	}

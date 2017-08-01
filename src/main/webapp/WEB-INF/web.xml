@@ -13,7 +13,7 @@
     <description></description>
     <display-name>GetRequests</display-name>
     <servlet-name>GetRequests</servlet-name>
-    <servlet-class>com.TRMS_ARA.servlet.GetRequestsServlet</servlet-class>
+    <servlet-class>com.TRMS_ARA.servlet.GetRequests</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GetRequests</servlet-name>
@@ -23,11 +23,10 @@
     <description></description>
     <display-name>ViewRFDetails</display-name>
     <servlet-name>ViewRFDetails</servlet-name>
-    <servlet-class>com.TRMS_ARA.servlet.GetRequestsServlet</servlet-class>
+    <servlet-class>com.TRMS_ARA.servlet.ViewRFDetails</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ViewRFDetails</servlet-name>
-    <url-pattern>/viewRFDetails</url-pattern>
+    <url-pattern>/ViewRFDetails</url-pattern>
   </servlet-mapping>
 </web-app>
-

@@ -1,25 +1,128 @@
 package model.reimbursement;
 
-import java.io.File;
-
-import model.employee.Employee;
+import java.sql.Date;
 
 public class ReimbursementForm {
-	Employee requestor;
-	File doc;
+	int eId; 							// e_id
+	Date startDate;						// start_date
+	Date startTime;						// start_time
+	Date endTime;						// end_time
+	String location;					// location
+	String description;					// description
+	Double cost; 						// cost
+	Double amount;
+	String gradingFormat;				// grading_format
+	String eventType;					// event_type
+	String workRelated;					// work_related
+	int status;							// status
+	Date lastActivity;					// lastActivity
 	
-	
-	public ReimbursementForm(Employee requestor, String[] input) {
-		this.requestor = requestor;
-	}
-	
-	public void sendRR() {
-		// Insert into new record into database with new RR	
+	public ReimbursementForm() {
+		super();
 	}
 
-	public void setDoc(File doc) {
-		this.doc = doc;
+	public int geteId() {
+		return eId;
 	}
-	
+
+	public void seteId(int eId) {
+		this.eId = eId;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Double getCost() {
+		return cost;
+	}
+
+	public void setCost(Double cost) {
+		this.cost = cost;
+	}
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	public String getGradingFormat() {
+		return gradingFormat;
+	}
+
+	public void setGradingFormat(String gradingFormat) {
+		this.gradingFormat = gradingFormat;
+	}
+
+	public String getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
+	}
+
+	public String getWorkRelated() {
+		return workRelated;
+	}
+
+	public void setWorkRelated(String workRelated) {
+		this.workRelated = workRelated;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public Date getLastActivity() {
+		return lastActivity;
+	}
+
+	public void setLastActivity(Date lastActivity) {
+		this.lastActivity = lastActivity;
+	}
 	
 }
