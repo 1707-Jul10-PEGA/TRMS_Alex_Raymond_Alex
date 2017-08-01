@@ -12,7 +12,7 @@ import model.reimbursement.ReimbursementForm;
 //import jsonString.JSONConvert;
 import util.ConnectionFactory;
 
-public abstract class ApproverDao {
+public class ApproverDao {
 	Connection conn;
 
 	public ApproverDao() {
@@ -138,7 +138,13 @@ public abstract class ApproverDao {
 		return 	count != 1;
 	}
 	
-	public abstract boolean denyReimbursement(int rfId) throws SQLException;
+	public boolean denyReimbursement(int rfId) throws SQLException{
+		
+	}
+	
+	public boolean denyReimbursement(int rfId, String reason) throws SQLException{
+		
+	}
 	
 	public RFViewRow getRFInfo(int rfId) throws SQLException {
 		conn = ConnectionFactory.getInstance().getConnection();

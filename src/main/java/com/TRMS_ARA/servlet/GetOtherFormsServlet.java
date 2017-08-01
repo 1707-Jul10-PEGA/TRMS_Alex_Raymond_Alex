@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.ApproverDao;
-import dao.SupervisorDao;
 import model.reimbursement.RFViewRow;
 import model.reimbursement.RFView;
 
@@ -33,7 +32,7 @@ public class GetOtherFormsServlet extends HttpServlet {
 		
 		int userID = (Integer) request.getSession().getAttribute("employeeId");
 		
-		ApproverDao getInfo = new SupervisorDao();
+		ApproverDao getInfo = new ApproverDao();
 		
 		LinkedList<Integer> rfIDList;
 		
