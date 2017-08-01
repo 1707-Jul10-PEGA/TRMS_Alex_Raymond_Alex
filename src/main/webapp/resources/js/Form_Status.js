@@ -2,7 +2,6 @@ function generateRFDetailRows(details) {
 	
 }
 
-
 function generateRFRows(form_id, rowsData) {
 
 	for (i = 0; i < rowsData.rfVRows.length; i++) {
@@ -13,7 +12,6 @@ function generateRFRows(form_id, rowsData) {
 		//set class and rfId attribute
 		newRow.setAttribute("class", "re_row");
 		newRow.setAttribute("rfId", rowsData.rfVRows[i].rfId);
-		console.log(newRow.getAttribute("rfId"));
 		
 		//store id
 		var id_col = document.createElement("td");
@@ -32,29 +30,31 @@ function generateRFRows(form_id, rowsData) {
 		last_col.append(document
 				.createTextNode(rowsData.rfVRows[i].last));
 		newRow.appendChild(last_col);
-
-		$('#own_forms').append(newRow);
+		
+		
+		$(form_id).append(newRow);
 	}
 	
 	
-	$('#own_forms tr').click(function() {
+	$(form_id).click(function() {
 		var rfId = $(this).attr("rfId");
 		if (rfId) {
-			$.post('viewRFDetails', {rfId:rfId});
+			$.post('viewRFDetails', {rfId:rfId}, function(details) {
+				generateRFDetailRows(details);
+			});
 		}
-		console.log(rfId);
 	});
 }
 
 window.onload = function() {
 
 	$.post('getOwnForms', function(rowsData) {
-		generateRFRows("own_forms",rowsData);
+		generateRFRows('#own_forms',rowsData);
 	});
 
 	$.post('getOtherForms', function(rowsData) {
 		if (rowsData) {
-			generateRFRows("other_forms",rowsData);
+			generateRFRows('#other_forms',rowsData);
 		}
 	});
 
@@ -62,13 +62,5 @@ window.onload = function() {
 		if (rowsData) {
 			
 		}	
-	});
-	
-	$('#own_forms tr').click(function() {
-		var rfId = $(this).attr("rfId");
-		if (rfId) {
-			$.post('viewRFDetails', rfId);
-		}
-		console.log(rfId);
 	});
 }
