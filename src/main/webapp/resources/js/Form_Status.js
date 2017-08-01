@@ -1,6 +1,21 @@
 function generateRFDetailRows(details) {
-	
+
+	$('#formDetails td').remove();
+	$('#e_id').append('<td>' + details.eId + '</td>');
+	$('#start_date').append('<td>' + details.startDate + '</td>');
+	$('#start_time').append('<td>' + details.startTime + '</td>');
+	$('#end_time').append('<td>' + details.endTime + '</td>');
+	$('#location').append('<td>' + details.location + '</td>');
+	$('#description').append('<td>' + details.description + '</td>');
+	$('#cost').append('<td>' + details.cost + '</td>');
+	$('#amount').append('<td>' + details.amount + '</td>');
+	$('#grading_format').append('<td>' + details.gradingFormat + '</td>');
+	$('#event_type').append('<td>' + details.eventType + '</td>');
+	$('#work_related').append('<td>' + details.workRelated + '</td>');
+	$('#status').append('<td>' + details.status + '</td>');
+	$('#last_activity').append('<td>' + details.lastActivity + '</td>');
 }
+
 
 function generateRFRows(form_id, rowsData) {
 
@@ -12,6 +27,7 @@ function generateRFRows(form_id, rowsData) {
 		//set class and rfId attribute
 		newRow.setAttribute("class", "re_row");
 		newRow.setAttribute("rfId", rowsData.rfVRows[i].rfId);
+		console.log(newRow.getAttribute("rfId"));
 		
 		//store id
 		var id_col = document.createElement("td");
@@ -36,7 +52,7 @@ function generateRFRows(form_id, rowsData) {
 	}
 	
 	
-	$(form_id).click(function() {
+	$(form_id + ' tr').click(function() {
 		var rfId = $(this).attr("rfId");
 		if (rfId) {
 			$.post('viewRFDetails', {rfId:rfId}, function(details) {
@@ -63,4 +79,6 @@ window.onload = function() {
 			
 		}	
 	});
+	
+
 }

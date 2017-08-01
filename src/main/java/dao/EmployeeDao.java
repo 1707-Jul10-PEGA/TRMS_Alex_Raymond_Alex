@@ -63,8 +63,35 @@ public class EmployeeDao {
 		return forms;
 	}
 	
+	public boolean checkAuthority(int rfId, int eId) throws SQLException {
+		conn = ConnectionFactory.getInstance().getConnection();
+		String sql = "select rf.rf_id, e.e_id,e.department, e.department_head from Reimbursement_Form rf, Employee e" +
+				" where rf.rf_id = ? and rf.e_id = e.e_id and not (rf.e_id = ?) and ( e.supervisor = ? and (rf.status = 1 or rf.status = 6)) or (((" +
+				" select e.department from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = (select e.department from Reimbursement_Form rf, Employee e where e.e_id = ?)) and ((" +
+				" select e.department_head from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = 1) and (rf.status = 2 or rf.status = 7)) or ((((" + 
+				" select e.department from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = 'BC') and not ((select e.supervisor from Reimbursement_Form rf, Employee e where e.e_id = rf.rf_id) = ?)" + 
+				" and not ((select e_id from Employee where department_head = 1) = ?) and (rf.status = 3 or rf.status = 8)))";
+				//
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, rfId);
+		stmt.setInt(2, eId);
+		stmt.setInt(3, eId);
+		stmt.setInt(4, eId);
+		stmt.setInt(5, eId);
+		stmt.setInt(6, eId);
+		ResultSet rs = stmt.executeQuery();
+		int approver = 0;
+		
+		if (rs.next()) {
+			approver = rs.getInt(1);
+		}
+		conn.close();
+		
+		return approver == 1;
+	}
 	
-	public ReimbursementForm getRFInfo(int rfId) throws SQLException {
+	public ReimbursementForm getRFInfo(int rfId, int eId) throws SQLException {
+		boolean approver = checkAuthority(rfId, eId);
 		conn = ConnectionFactory.getInstance().getConnection();
 		String sql = "select * from Reimbursement_Form where rf_id = ?";
 		
@@ -85,9 +112,12 @@ public class EmployeeDao {
 			rf.setGradingFormat(rs.getString(10));				// grading_format
 			rf.setEventType(rs.getString(11));					// event_type
 			rf.setWorkRelated(rs.getString(12));				// work_related
-			rf.setStatus(rs.getInt(14));							// status
+			rf.setStatus(rs.getInt(14));						// status
 			rf.setLastActivity(rs.getDate(15));					// last activity
+			rf.setApprover(approver);
 			//NOTE: blob object: approval object not included
+			
+			rs.close();
 			return rf;
 		} else {
 			return null;

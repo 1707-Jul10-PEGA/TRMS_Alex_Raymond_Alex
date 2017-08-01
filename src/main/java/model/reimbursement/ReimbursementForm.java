@@ -10,13 +10,14 @@ public class ReimbursementForm {
 	String location;					// location
 	String description;					// description
 	Double cost; 						// cost
-	Double amount;
+	Double amount;						// amount
 	String gradingFormat;				// grading_format
 	String eventType;					// event_type
 	String workRelated;					// work_related
 	int status;							// status
 	Date lastActivity;					// lastActivity
-	
+	boolean isApprover;					// confirm the right for this viewer to approve/deny the form 
+
 	public ReimbursementForm() {
 		super();
 	}
@@ -125,4 +126,11 @@ public class ReimbursementForm {
 		this.lastActivity = lastActivity;
 	}
 	
+	public boolean isApprover() {
+		return isApprover;
+	}
+
+	public void setApprover(boolean isApprover) {
+		this.isApprover = isApprover;
+	}
 }

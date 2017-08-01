@@ -29,7 +29,7 @@ public class ViewRFDetails extends HttpServlet {
 		ReimbursementForm rf = null;
 		try {
 			System.out.println("VIEW RFID IS: " + Integer.parseInt(request.getParameter("rfId")));
-			rf = emDao.getRFInfo(Integer.parseInt(request.getParameter("rfId")));
+			rf = emDao.getRFInfo(Integer.parseInt(request.getParameter("rfId")), (int)(request.getSession().getAttribute("employeeId")));
 			
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -37,11 +37,11 @@ public class ViewRFDetails extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		
 		if (rf == null) {
-			pw.print("NULLLLLLLL");
+			pw.print("NULL");
 		}
 		else {
 			String rfString = (new ObjectMapper()).writeValueAsString(rf);
-			
+			response.setContentType("application/json");
 			pw.print(rfString);
 		}
 	}
