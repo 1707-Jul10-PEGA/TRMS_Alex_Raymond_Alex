@@ -13,10 +13,21 @@
     <description></description>
     <display-name>GetRequests</display-name>
     <servlet-name>GetRequests</servlet-name>
-    <servlet-class>com.TRMS_ARA.servlet.GetRequests</servlet-class>
+    <servlet-class>com.TRMS_ARA.servlet.GetRequestsServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GetRequests</servlet-name>
     <url-pattern>/GetRequests</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ViewRFDetails</display-name>
+    <servlet-name>ViewRFDetails</servlet-name>
+    <servlet-class>com.TRMS_ARA.servlet.GetRequestsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewRFDetails</servlet-name>
+    <url-pattern>/viewRFDetails</url-pattern>
+  </servlet-mapping>
 </web-app>
+
