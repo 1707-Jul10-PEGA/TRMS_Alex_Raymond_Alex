@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.LinkedList;
 
+import model.reimbursement.RFViewRow;
+import model.reimbursement.ReimbursementForm;
 //import jsonString.JSONConvert;
 import util.ConnectionFactory;
 
@@ -138,36 +140,25 @@ public abstract class ApproverDao {
 	
 	public abstract boolean denyReimbursement(int rfId) throws SQLException;
 	
-	public String[] getRFInfo(int rfId) throws SQLException {
-		String sql = "select * from Reimburse_Form where status = ?";
+	public RFViewRow getRFInfo(int rfId) throws SQLException {
+		conn = ConnectionFactory.getInstance().getConnection();
+		String sql = "select Employee.first, Employee.last "
+				+ "FROM Reimbursement_Form INNER JOIN Employee "
+				+ "ON Reimbursement_Form.e_id = Employee.e_id "
+				+ "WHERE Reimbursement_Form.rf_id = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, rfId);
 		ResultSet rs = stmt.executeQuery();
 		
-		String[] returnArray = new String[rs.getFetchSize()];
-		int i = 0;
-		while (rs.next()){
-			
-			String[] strArray = new String[13];
-			strArray[0] = String.valueOf(rs.getInt(1));	 	// rf_id
-			strArray[1] = String.valueOf(rs.getInt(2)); 	// e_id
-			strArray[2] = String.valueOf(rs.getDate(3));	// start_date
-			strArray[3] = String.valueOf(rs.getDate(4));	// start_time
-			strArray[4] = String.valueOf(rs.getDate(5));	// end_time
-			strArray[5] = rs.getString(6);					// location
-			strArray[6] = rs.getString(7);					// description
-			strArray[7] = String.valueOf(rs.getInt(8)); 	// cost
-			strArray[8] = rs.getString(9);					// grading_format
-			strArray[9] = rs.getString(10);					// event_type
-			strArray[10] = rs.getString(11);				// work_related
-			strArray[11] = String.valueOf(rs.getInt(13));	// status
-			strArray[12] = String.valueOf(rs.getDate(14));	// last activity
-			//NOTE: blob object: approval object not included
-			
-//			returnArray[i] = JSONConvert.getJSON(strArray);
+		if (rs.next()) {
+			String first = rs.getString(1);
+			String last = rs.getString(2);
+			RFViewRow rf = new RFViewRow(rfId, first, last);
+			return rf;
+		} else {
+			return null;
 		}
-		return returnArray;
 	}
 	
 	public boolean requestForInfo(String detail, int receiver, int rfId, int eId) throws SQLException {
