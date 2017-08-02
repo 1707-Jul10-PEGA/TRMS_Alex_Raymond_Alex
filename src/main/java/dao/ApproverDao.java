@@ -12,7 +12,7 @@ import model.reimbursement.ReimbursementForm;
 //import jsonString.JSONConvert;
 import util.ConnectionFactory;
 
-public abstract class ApproverDao {
+public class ApproverDao {
 	Connection conn;
 
 	public ApproverDao() {
@@ -138,7 +138,28 @@ public abstract class ApproverDao {
 		return 	count != 1;
 	}
 	
-	public abstract boolean denyReimbursement(int rfId) throws SQLException;
+	public boolean denyReimbursement(int rfId) throws SQLException{
+		
+		conn = ConnectionFactory.getInstance().getConnection();
+		conn.setAutoCommit(false);
+		conn.setSavepoint();
+		
+		String sql = "update Reimbursement_Form set status=0 Where rf_id=?";
+		
+		PreparedStatement pstmnt = conn.prepareStatement(sql);
+		
+		pstmnt.setInt(1, rfId);
+		
+		int count = pstmnt.executeUpdate();
+		
+		if(count != 1){
+			conn.rollback();
+		}
+		
+		conn.setAutoCommit(true);
+		conn.close();
+		return (count == 1);
+	}
 	
 	public RFViewRow getRFInfo(int rfId) throws SQLException {
 		conn = ConnectionFactory.getInstance().getConnection();
