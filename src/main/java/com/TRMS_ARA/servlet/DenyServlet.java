@@ -1,6 +1,8 @@
 package com.TRMS_ARA.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +22,15 @@ public class DenyServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ApproverDao dao = new ApproverDao();
-		dao.denyReimbursement(rfId);
+		PrintWriter pw = response.getWriter();
+		try {
+			if(!dao.denyReimbursement(Integer.parseInt(request.getParameter("rfId")))){
+				pw.write("Denial of the application is Unsuccessful");
+			};
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		pw.write("Application denied");
 	}
 
 }

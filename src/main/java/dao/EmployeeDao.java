@@ -65,12 +65,12 @@ public class EmployeeDao {
 	
 	public boolean checkAuthority(int rfId, int eId) throws SQLException {
 		conn = ConnectionFactory.getInstance().getConnection();
-		String sql = "select rf.rf_id from Reimbursement_Form rf, Employee e where rf.rf_id = 1 and rf.e_id = e.e_id and not (rf.e_id = 2) and ("
-				+ "e.supervisor = 2 and (rf.status = 1 or rf.status = 6)) or ((("
-				+ "select min(e.department) from  Reimbursement_Form rf, Employee e where e.e_id = 1 and e.e_id = rf.e_id) = (select min(e.department) from  Reimbursement_Form rf, Employee e where e.e_id = 2)) and (("
+		String sql = "select rf.rf_id from Reimbursement_Form rf, Employee e where rf.rf_id = ? and rf.e_id = e.e_id and not (rf.e_id = ?) and ("
+				+ "e.supervisor = ? and (rf.status = 1 or rf.status = 6)) or ((("
+				+ "select min(e.department) from  Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = (select min(e.department) from  Reimbursement_Form rf, Employee e where e.e_id = ?)) and (("
 				+ "select min(e.department_head) from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = 1) and (rf.status = 2 or rf.status = 7)) or (((("
-				+ "select min(e.department) from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = 'BC') and not ((select min(e.supervisor) from Reimbursement_Form rf, Employee e where e.e_id = rf.rf_id) = 2)"
-				+ "and not ((select e.e_id from Reimbursement_Form rf, Employee e where e.department_head = 1) = 2) and (rf.status = 3 or rf.status = 8)))";
+				+ "select min(e.department) from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = 'BC') and not ((select min(e.supervisor) from Reimbursement_Form rf, Employee e where e.e_id = rf.rf_id) = ?)"
+				+ "and not ((select e.e_id from Reimbursement_Form rf, Employee e where e.department_head = 1) = ?) and (rf.status = 3 or rf.status = 8)))";
 
 				//
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -104,8 +104,8 @@ public class EmployeeDao {
 			ReimbursementForm rf = new ReimbursementForm();
 			rf.setRfId(rs.getInt(1));							// rf_id
 			rf.seteId(rs.getInt(2)); 							// e_id
-			rf.setStartDate(rs.getDate(3));						// start_date
-			rf.setStartTime(rs.getDate(4));						// start_time
+			rf.setStartDate(rs.getString(3));						// start_date
+			rf.setStartTime(rs.getString(4));						// start_time
 			rf.setEndTime(rs.getDate(5));						// end_time
 			rf.setLocation(rs.getString(6));					// location
 			rf.setDescription(rs.getString(7));					// description

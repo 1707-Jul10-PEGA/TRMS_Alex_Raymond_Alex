@@ -135,7 +135,7 @@ public class ApproverDao {
 		conn.setAutoCommit(true);
 		
 		conn.close();
-		return 	count != 1;
+		return 	count == 1;
 	}
 	
 	public boolean denyReimbursement(int rfId) throws SQLException{

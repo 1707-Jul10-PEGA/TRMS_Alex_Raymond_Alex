@@ -16,10 +16,10 @@ import dao.EmployeeDao;
 import model.reimbursement.ReimbursementForm;
 
 @WebServlet("/viewRFDetails")
-public class ViewRFDetails extends HttpServlet {
+public class ViewRFDetailsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
   
-    public ViewRFDetails() {
+    public ViewRFDetailsServlet() {
         super();
     }
 	

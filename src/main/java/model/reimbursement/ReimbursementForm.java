@@ -5,8 +5,8 @@ import java.sql.Date;
 public class ReimbursementForm {
 	int rfId;							// rf_id
 	int eId; 							// e_id
-	Date startDate;						// start_date
-	Date startTime;						// start_time
+	String startDate;						// start_date
+	String startTime;						// start_time
 	Date endTime;						// end_time
 	String location;					// location
 	String description;					// description
@@ -39,19 +39,19 @@ public class ReimbursementForm {
 		this.eId = eId;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getStartTime() {
+	public String getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
 

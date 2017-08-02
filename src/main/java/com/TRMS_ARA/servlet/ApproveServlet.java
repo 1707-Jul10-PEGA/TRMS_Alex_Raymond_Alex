@@ -32,12 +32,13 @@ public class ApproveServlet extends HttpServlet {
 				pw.write("Form not approved. Reimbursement Form cannot be approved by the current employee");
 			};
 		} catch(SQLException e) {
+			e.printStackTrace();
 			pw.write("SQL Exception in Server");
 		}
 		catch(NumberFormatException e) {
 			pw.write("Invalid rf_id recieved");
 		}
-		pw.write("Form approved");
+		pw.flush();
 	}
 
 }

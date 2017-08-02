@@ -43,6 +43,7 @@ public class GetOwnFormsServlet extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 
 		if (rfOwnArray == null) {
+			System.out.println("NULL is returned");
 			pw.print("");
 		} 
 		else {
