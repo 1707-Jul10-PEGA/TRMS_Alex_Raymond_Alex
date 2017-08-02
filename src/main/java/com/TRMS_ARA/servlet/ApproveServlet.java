@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.ApproverDao;
+import dao.SupervisorDao;
 
 @WebServlet("/approve")
 public class ApproveServlet extends HttpServlet {
@@ -22,7 +23,7 @@ public class ApproveServlet extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ApproverDao dao = new ApproverDao();
+		ApproverDao dao = new SupervisorDao();
 		PrintWriter pw = response.getWriter();
 
 		try {

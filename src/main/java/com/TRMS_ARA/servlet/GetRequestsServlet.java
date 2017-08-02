@@ -1,39 +1,51 @@
 package com.TRMS_ARA.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class GetRequests
- */
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import dao.EmployeeMessageDao;
+import model.message.EmployeeMessage;
+import model.message.EmployeeMessages;
+
+@WebServlet("/getRequests")
 public class GetRequestsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public GetRequestsServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+ 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		int eId = (int)request.getSession().getAttribute("employeeId");
+		EmployeeMessageDao dao = new EmployeeMessageDao();
+		PrintWriter pw = response.getWriter();
+		try {
+			EmployeeMessage[] emsg = dao.getMessages(eId);
+			if (emsg == null) {
+				pw.write("");
+			}
+			else {
+				EmployeeMessages emsgs= new EmployeeMessages(dao.getMessages(eId));
+				ObjectMapper om = new ObjectMapper();
+				response.setContentType("application/json");
+				
+				String emsgsString = (new ObjectMapper()).writeValueAsString(emsgs);
+
+				pw.print(emsgsString);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }
