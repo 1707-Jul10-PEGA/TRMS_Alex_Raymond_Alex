@@ -39,4 +39,14 @@
     <servlet-name>ApproveServlet</servlet-name>
     <url-pattern>/ApproveServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DenyServlet</display-name>
+    <servlet-name>DenyServlet</servlet-name>
+    <servlet-class>com.TRMS_ARA.servlet.DenyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DenyServlet</servlet-name>
+    <url-pattern>/DenyServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

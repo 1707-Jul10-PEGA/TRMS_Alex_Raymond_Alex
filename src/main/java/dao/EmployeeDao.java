@@ -65,12 +65,13 @@ public class EmployeeDao {
 	
 	public boolean checkAuthority(int rfId, int eId) throws SQLException {
 		conn = ConnectionFactory.getInstance().getConnection();
-		String sql = "select rf.rf_id, e.e_id,e.department, e.department_head from Reimbursement_Form rf, Employee e" +
-				" where rf.rf_id = ? and rf.e_id = e.e_id and not (rf.e_id = ?) and ( e.supervisor = ? and (rf.status = 1 or rf.status = 6)) or (((" +
-				" select e.department from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = (select e.department from Reimbursement_Form rf, Employee e where e.e_id = ?)) and ((" +
-				" select e.department_head from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = 1) and (rf.status = 2 or rf.status = 7)) or ((((" + 
-				" select e.department from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = 'BC') and not ((select e.supervisor from Reimbursement_Form rf, Employee e where e.e_id = rf.rf_id) = ?)" + 
-				" and not ((select e_id from Employee where department_head = 1) = ?) and (rf.status = 3 or rf.status = 8)))";
+		String sql = "select rf.rf_id from Reimbursement_Form rf, Employee e where rf.rf_id = 1 and rf.e_id = e.e_id and not (rf.e_id = 2) and ("
+				+ "e.supervisor = 2 and (rf.status = 1 or rf.status = 6)) or ((("
+				+ "select min(e.department) from  Reimbursement_Form rf, Employee e where e.e_id = 1 and e.e_id = rf.e_id) = (select min(e.department) from  Reimbursement_Form rf, Employee e where e.e_id = 2)) and (("
+				+ "select min(e.department_head) from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = 1) and (rf.status = 2 or rf.status = 7)) or (((("
+				+ "select min(e.department) from Reimbursement_Form rf, Employee e where e.e_id = rf.e_id) = 'BC') and not ((select min(e.supervisor) from Reimbursement_Form rf, Employee e where e.e_id = rf.rf_id) = 2)"
+				+ "and not ((select e.e_id from Reimbursement_Form rf, Employee e where e.department_head = 1) = 2) and (rf.status = 3 or rf.status = 8)))";
+
 				//
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, rfId);
